@@ -1,6 +1,3 @@
-import Quaternion from "quaternion";
-import { useState } from "react";
-import { useEffect } from "react";
 import styled from "styled-components";
 import Cube3D from "./Cube3D";
 
@@ -9,20 +6,12 @@ function Cube({ side, rotation }) {
     const cube = new Cube3D(side);
 
     return (
-        <CubeWrapperX
+        <CubeWrapper
             side={side}
             style={{
                 transform: "matrix3d(" + rotation + ")"
-                // transform: "rotateX(" + rotation[0] + "deg) rotateY(" + rotation[1] + "deg) rotateZ(" + rotation[2] + "deg)"
-                // transform: "rotateY(" + rotation[1] + "deg) rotateY(" + rotation[1] + "deg)"
             }}
         >
-            {/* <CubeWrapperY
-                side={side}
-                style={{
-                    transform: "rotateX(" + rotation[0] + "deg)"
-                }}
-            > */}
             {
                 cube.faces.map((s, i) => {
                     return (
@@ -48,12 +37,12 @@ function Cube({ side, rotation }) {
                 })
             }
             {/* </CubeWrapperY> */}
-        </CubeWrapperX>
+        </CubeWrapper>
     );
 }
 
 
-const CubeWrapperX = styled.section`
+const CubeWrapper = styled.section`
     position: relative;
     transform-style: preserve-3d;
     height: ${(props) => Number(props.side)}px;
