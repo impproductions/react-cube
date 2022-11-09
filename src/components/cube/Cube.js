@@ -2,12 +2,13 @@ import styled from "styled-components";
 import Cube3D from "./Cube3D";
 
 
-function Cube({ side, rotation }) {
+function Cube({ side, rotation, animate }) {
     const cube = new Cube3D(side);
 
     return (
         <CubeWrapper
             side={side}
+            animate={animate}
             style={{
                 transform: "matrix3d(" + rotation + ")"
             }}
@@ -48,15 +49,7 @@ const CubeWrapper = styled.section`
     height: ${(props) => Number(props.side)}px;
     width: ${(props) => Number(props.side)}px;
     border: 10px solid red;
-    transition: all 500ms ease-out;
-`;
-const CubeWrapperY = styled.section`
-    position: relative;
-    height: ${(props) => props.side}px;
-    width: ${(props) => props.side}px;
-    transform-style: preserve-3d;
-    border: 10px solid green;
-    transition: all 500ms ease-out;
+    transition: ${(props) => props.animate ? "all 500ms ease-out" : ''};
 `;
 
 const FaceWrapper = styled.div`
