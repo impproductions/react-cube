@@ -30,8 +30,11 @@ function Stage() {
             (Math.sign(event.movementX) || 1),
             1
         ];
-        if (axis) rotate(axis.map((c, i) => c * directions[i]), Math.sqrt((event.movementX ** 2) + (event.movementY ** 2)) / 100 * Math.PI);
+        if (axis) rotate(axis.map((c, i) => c * directions[i]), Math.sqrt((event.movementX ** 2) + (event.movementY ** 2)) / (size[0] * 0.5) * Math.PI);
+        // if (axis) rotate(axis.map((c, i) => c * directions[i]), Math.sqrt((event.movementX ** 2) + (event.movementY ** 2)) / 100 * Math.PI);
 
+
+        console.log(axis, delta, event);
         // for free movement
         // if (axis) rotate(Math.abs(event.movementX) > Math.abs(event.movementY) ? [0, Math.sign(event.movementX) || 1, 0] : [-Math.sign(event.movementY) || 1, 0, 0], Math.sqrt((event.movementX ** 2) + (event.movementY ** 2)) / 100 * Math.PI);
     }
