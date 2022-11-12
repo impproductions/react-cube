@@ -18,7 +18,7 @@ function useDragHandler(dragAreaId, onDragStart, onDrag, onDragEnd) {
                 if (e.touches) {
                     e = e.touches[0];
                     console.log("Touchs start", e);
-                    lastTouchPosition = [e.pageX, e.pageY];
+                    lastTouchPosition.current = [e.pageX, e.pageY];
                 }
 
 
@@ -50,9 +50,9 @@ function useDragHandler(dragAreaId, onDragStart, onDrag, onDragEnd) {
             e.preventDefault();
             if (e.touches) {
                 e = e.touches[0];
-                e.movementX = -(lastTouchPosition[0] - e.pageX);
-                e.movementY = -(lastTouchPosition[1] - e.pageY);
-                lastTouchPosition = [e.pageX, e.pageY];
+                e.movementX = -(lastTouchPosition.current[0] - e.pageX);
+                e.movementY = -(lastTouchPosition.current[1] - e.pageY);
+                lastTouchPosition.current = [e.pageX, e.pageY];
             }
             // console.log("Touchs move", e);
 
@@ -69,7 +69,7 @@ function useDragHandler(dragAreaId, onDragStart, onDrag, onDragEnd) {
             e.preventDefault();
             if (e.touches) {
                 e = e.changedTouches[0];
-                lastTouchPosition = null;
+                lastTouchPosition.current = null;
             }
             console.log("Touchs up", e);
 

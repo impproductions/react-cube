@@ -4,7 +4,6 @@ import styled from "styled-components";
 import Quaternion from "quaternion";
 import Cube from "./Cube";
 
-import useSwipeHandler from "./swipeHandler";
 import useDragHandler from "./dragHandler";
 
 function Stage() {
@@ -14,8 +13,6 @@ function Stage() {
 
     const stageElementId = "stage-element";
     const size = [500, 500];
-
-    const [debugAxis, setDebugAxis] = useState(null);
 
     useDragHandler(stageElementId, dragStart, dragMove, dragEnd);
 
@@ -45,7 +42,7 @@ function Stage() {
         // to snap: convert to matrix and round the biggest number for each row to 1 and the others to 0?
         const snapRotation = (q) => {
             let matrix = q.toMatrix().reduce((p, c, i) => {
-                if (i % 3 == 0) p.push([c]);
+                if (i % 3 === 0) p.push([c]);
                 else p[p.length - 1].push(c);
                 return p;
             }, []);
@@ -94,23 +91,10 @@ function Stage() {
         <>
             <StageView id={stageElementId} name={stageElementId} size={size}>
                 <Cube side="200" rotation={orbit} animate={animate.current}></Cube>
-                {/* <DebugSquare>
-                    {debugAxis}
-                </DebugSquare> */}
             </StageView>
         </>
     );
 }
-
-const DebugSquare = styled.div`
-    min-height: 50px;
-    min-width: 50px;
-    position: absolute;
-    top: 20%;
-    left: 20%;
-    background-color: white;
-    border: 1px solid black;
-`;
 
 const StageView = styled.section.attrs(props => ({ name: props.name }))`
     display: flex;
