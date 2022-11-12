@@ -17,32 +17,27 @@ function useDragHandler(dragAreaId, onDragStart, onDrag, onDragEnd) {
 
                 if (e.touches) {
                     e = e.touches[0];
-                    console.log("Touchs start", e);
                     lastTouchPosition.current = [e.pageX, e.pageY];
                 }
 
-
-                dragStartCoord.current = [e.clientX, e.clientY];
+                dragStartCoord.current = [e.pageX, e.pageY];
                 isDragging.current = true;
+
                 onDragStart();
 
-                const getAxis = (delta) => {
-                    const [x, y] = delta();
-
-                    axis.current = (Math.abs(x) > Math.abs(y) ? [0, Math.sign(x * e.movementX) || 1, 0] : [Math.sign(y * e.movementY) || 1, 0, 0]);
+                const setAxis = () => {
+                    setTimeout(() => {
+                        const [x, y] = delta();
+                        if (!isDragging.current) return;
+                        if (delta().some(v => Math.abs(v) > 10) && Math.abs(x) !== Math.abs(y)) {
+                            axis.current = (Math.abs(x) > Math.abs(y) ? [0, Math.sign(x * e.movementX) || 1, 0] : [Math.sign(y * e.movementY) || 1, 0, 0]);
+                        } else {
+                            setAxis(delta);
+                        }
+                    }, 100);
                 };
 
-                setTimeout(() => {
-                    if (!isDragging.current) return;
-                    if (delta().some(v => Math.abs(v) > 10)) {
-                        getAxis(delta);
-                    } else {
-                        setTimeout(() => {
-                            getAxis(delta);
-                        }, 100);
-                    }
-                }, 100);
-
+                setAxis();
             }
         }
 
@@ -54,13 +49,10 @@ function useDragHandler(dragAreaId, onDragStart, onDrag, onDragEnd) {
                 e.movementY = -(lastTouchPosition.current[1] - e.pageY);
                 lastTouchPosition.current = [e.pageX, e.pageY];
             }
-            // console.log("Touchs move", e);
 
-            mouseCurrentCoords.current = [e.clientX, e.clientY];
+            mouseCurrentCoords.current = [e.pageX, e.pageY];
 
             if (isDragging.current) {
-                // const [x, y] = delta();
-                // axis.current = (Math.abs(x) > Math.abs(y) ? "h" : "v");
                 onDrag({ delta: delta(), axis: axis.current, event: e });
             }
         }
@@ -71,12 +63,11 @@ function useDragHandler(dragAreaId, onDragStart, onDrag, onDragEnd) {
                 e = e.changedTouches[0];
                 lastTouchPosition.current = null;
             }
-            console.log("Touchs up", e);
 
-            mouseCurrentCoords.current = [e.clientX, e.clientY];
+            mouseCurrentCoords.current = [e.pageX, e.pageY];
 
             if (isDragging.current) {
-                dragEndCoord.current = [e.clientX, e.clientY];
+                dragEndCoord.current = [e.pageX, e.pageY];
 
                 onDragEnd({ delta: delta(), axis: axis.current });
 
@@ -105,7 +96,7 @@ function useDragHandler(dragAreaId, onDragStart, onDrag, onDragEnd) {
             window.removeEventListener("touchmove", mouseMove);
             window.removeEventListener("touchend", mouseUp);
         }
-    }, []);
+    });
 
     return null;
 }
