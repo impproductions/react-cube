@@ -1,6 +1,6 @@
 import { useRef, useEffect } from "react";
 
-function useDragHandler(dragAreaId, onDragStart, onDrag, onDragEnd) {
+function useDragHandler(dragAreaRef, onDragStart, onDrag, onDragEnd) {
     let dragStartCoord = useRef([]);
     let mouseCurrentCoords = useRef([]);
     let dragEndCoord = useRef([]);
@@ -11,7 +11,7 @@ function useDragHandler(dragAreaId, onDragStart, onDrag, onDragEnd) {
 
     useEffect(() => {
         const mouseDown = (e) => {
-            if (e.target.closest("#" + dragAreaId)) {
+            if (dragAreaRef.current.contains(e.target)) {
 
                 e.preventDefault();
 
@@ -23,16 +23,19 @@ function useDragHandler(dragAreaId, onDragStart, onDrag, onDragEnd) {
                 dragStartCoord.current = [e.pageX, e.pageY];
                 isDragging.current = true;
 
-                onDragStart();
+                onDragStart({ e });
 
                 const setAxis = () => {
+                    // set axis based on initial movement direction
                     setTimeout(() => {
                         const [x, y] = delta();
                         if (!isDragging.current) return;
+
                         if (delta().some(v => Math.abs(v) > 10) && Math.abs(x) !== Math.abs(y)) {
                             axis.current = (Math.abs(x) > Math.abs(y) ? [0, Math.sign(x * e.movementX) || 1, 0] : [Math.sign(y * e.movementY) || 1, 0, 0]);
                         } else {
-                            setAxis(delta);
+                            // keep waiting for the minimum movement treshold if the user starts a drag but doesn't move initially
+                            setAxis();
                         }
                     }, 100);
                 };
@@ -53,7 +56,7 @@ function useDragHandler(dragAreaId, onDragStart, onDrag, onDragEnd) {
             mouseCurrentCoords.current = [e.pageX, e.pageY];
 
             if (isDragging.current) {
-                onDrag({ delta: delta(), axis: axis.current, event: e });
+                onDrag({ event: e, axis: axis.current });
             }
         }
 
@@ -69,7 +72,7 @@ function useDragHandler(dragAreaId, onDragStart, onDrag, onDragEnd) {
             if (isDragging.current) {
                 dragEndCoord.current = [e.pageX, e.pageY];
 
-                onDragEnd({ delta: delta(), axis: axis.current });
+                onDragEnd({ event: e, axis });
 
                 setTimeout(() => {
                     mouseCurrentCoords.current = [];
