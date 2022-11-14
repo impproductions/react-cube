@@ -1,14 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 
-import Quaternion from "quaternion";
-import Cube from "./Cube";
+// import Quaternion from "quaternion";
 
 import useDragHandler from "./hooks/dragHandler";
 import useRotationHandler from "./hooks/rotationHandler";
 
 function RotationDisplay({ children, perspective = 800 }) {
-    const [cssMatrix, setCSSMatrix] = useState(Quaternion.ZERO.toMatrix4());
+    const [cssMatrix, setCSSMatrix] = useState([[1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1]]);
     const [animate, setAnimate] = useState(true);
     const dragAreaRef = useRef();
     const size = useRef([0,0]);
@@ -44,7 +43,10 @@ function RotationDisplay({ children, perspective = 800 }) {
 
     return (
         <DisplayView size={size} perspective={perspective} ref={dragAreaRef}>
-            <Rotator rotation={cssMatrix} animate={animate}>
+            <Rotator animate={animate} style={{
+                transition: animate && "all 300ms ease-out",
+                transform: "matrix3d(" + cssMatrix + ")",
+            }}>
                 {children}
             </Rotator>
         </DisplayView>
@@ -54,8 +56,6 @@ function RotationDisplay({ children, perspective = 800 }) {
 const Rotator = styled.div`
     border: 6px solid yellow;
     transform-style: preserve-3d;
-    transform: matrix3d(${props => props.rotation.join(',')});
-    transition: ${props => props.animate ? "all 300ms ease-out" : ''};
 `;
 const DisplayView = styled.section`
     display: flex;
