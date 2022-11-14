@@ -4,8 +4,13 @@ import { useRef } from "react";
 function useRotationHandler() {
     const orientation = useRef(new Quaternion([1,0,0,0]));
 
-    function rotate(axis, angle = Math.PI) {
-        orientation.current = orientation.current.mul(Quaternion.fromAxisAngle(orientation.current.conjugate().rotateVector(axis), angle / 2));
+    function rotate(axis, angle = Math.PI / 2) {
+        orientation.current = orientation.current.mul(Quaternion.fromAxisAngle(orientation.current.conjugate().rotateVector(axis), angle));
+    }
+
+    function rotateTo(axis, angle = Math.PI) {
+        orientation.current = Quaternion.ONE;
+        rotate(axis, angle);
     }
 
     function snap() {
@@ -24,8 +29,9 @@ function useRotationHandler() {
 
     return {
         rotate,
+        rotateTo,
         snap,
-        getMatrix
+        getMatrix,
     }
 }
 

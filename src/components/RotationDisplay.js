@@ -1,18 +1,16 @@
 import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 
-// import Quaternion from "quaternion";
-
 import useDragHandler from "./hooks/dragHandler";
 import useRotationHandler from "./hooks/rotationHandler";
 
-function RotationDisplay({ children, perspective = 800 }) {
-    const [cssMatrix, setCSSMatrix] = useState([[1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1]]);
+function RotationDisplay({ perspective = 800, children }) {
+    const [cssMatrix, setCSSMatrix] = useState([[1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1]]);
     const [animate, setAnimate] = useState(true);
     const dragAreaRef = useRef();
-    const size = useRef([0,0]);
+    const size = useRef([0, 0]);
 
-    const { rotate, snap, getMatrix } = useRotationHandler();
+    const { rotate, rotateTo, snap, getMatrix } = useRotationHandler();
     useDragHandler(dragAreaRef, dragStart, dragMove, dragEnd);
 
     useEffect(() => {
@@ -41,30 +39,68 @@ function RotationDisplay({ children, perspective = 800 }) {
         }, 100);
     }
 
+    function setRotation(direction, angle) {
+        rotateTo(direction, angle);
+        setCSSMatrix(getMatrix());        
+    }
+
     return (
-        <DisplayView size={size} perspective={perspective} ref={dragAreaRef}>
-            <Rotator animate={animate} style={{
-                transition: animate && "all 300ms ease-out",
-                transform: "matrix3d(" + cssMatrix + ")",
-            }}>
-                {children}
-            </Rotator>
-        </DisplayView>
+        <>
+            <DisplayViewSection size={size} perspective={perspective}>
+                <DragAreaDiv ref={dragAreaRef}></DragAreaDiv>
+                <RotatorDiv animate={animate} style={{
+                    transition: animate && "all 300ms ease-out",
+                    transform: "matrix3d(" + cssMatrix + ")",
+                }}>
+                    {children}
+                </RotatorDiv>
+            </DisplayViewSection>
+            <ControlsNav>
+                <button onClick={() => setRotation([0,1,0], 0)}>Front</button>
+                <button onClick={() => setRotation([1,0,0], Math.PI)}>Back</button>
+                <button onClick={() => setRotation([0,1,0], Math.PI / 2)}>Left</button>
+                <button onClick={() => setRotation([0,-1,0], Math.PI / 2)}>Right</button>
+                <button onClick={() => setRotation([-1,0,0], Math.PI / 2)}>Top</button>
+                <button onClick={() => setRotation([1,0,0], Math.PI / 2)}>Bottom</button>
+            </ControlsNav>
+        </>
     );
 }
 
-const Rotator = styled.div`
-    border: 6px solid yellow;
+const ControlsNav = styled.div`
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    padding: var(--padding);
+
+    button {
+        margin-top: calc(var(--padding) / 2);
+    }
+`;
+
+const DragAreaDiv = styled.div`
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    opacity: 0.7;
+`;
+
+const RotatorDiv = styled.div`
     transform-style: preserve-3d;
 `;
-const DisplayView = styled.section`
+const DisplayViewSection = styled.section`
     display: flex;
     align-items: center;
     justify-content: center;
     perspective: ${props => props.perspective}px;
     height: 100%;
     width: 100%;
-    background-color: grey;
 `;
 
 export default RotationDisplay;

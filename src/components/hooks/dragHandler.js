@@ -45,6 +45,11 @@ function useDragHandler(dragAreaRef, onDragStart, onDrag, onDragEnd) {
         }
 
         const mouseMove = (e) => {
+            if (!isDragging.current) {
+                mouseUp(e);
+                return;
+            };
+
             e.preventDefault();
             if (e.touches) {
                 e = e.touches[0];
@@ -61,7 +66,8 @@ function useDragHandler(dragAreaRef, onDragStart, onDrag, onDragEnd) {
         }
 
         const mouseUp = (e) => {
-            e.preventDefault();
+            if (isDragging.current) e.preventDefault();
+
             if (e.touches) {
                 e = e.changedTouches[0];
                 lastTouchPosition.current = null;
