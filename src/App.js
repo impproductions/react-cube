@@ -13,7 +13,7 @@ import './App.css';
 
 function App() {
   const isMobile = /Android|iPhone/i.test(navigator.userAgent);
-  const cubeSize = isMobile ? window.innerWidth * 0.7 : window.innerWidth * 0.5;
+  const cubeSize = Math.min(window.innerWidth, window.innerHeight) * (isMobile ? 0.7 : 0.6);
 
   return (
     <StyledMain>
