@@ -14,9 +14,9 @@ function Account() {
                 </p>
                 <div className='inset'>
                     <form action="">
-                        <label for="username-field">Username</label>
+                        <label htmlFor="username-field">Username</label>
                         <input type="text" placeholder='Username' />
-                        <label for="password-field">Password</label>
+                        <label htmlFor="password-field">Password</label>
                         <input type="password" placeholder='Password' />
                         <button type='submit' onClick={() => setLoggedIn(true)}>Submit</button>
                     </form>

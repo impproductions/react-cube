@@ -8,7 +8,7 @@ h1 {
 
 h2 {
   font-size: 1.5rem;
-  color:rgb(177, 177, 177)
+  color: rgb(177, 177, 177)
 }
 
 article {
@@ -26,6 +26,7 @@ form {
   gap: calc(var(--padding));
 
 }
+
 
 button {
   border: 0;

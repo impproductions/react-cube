@@ -41,7 +41,7 @@ function RotationDisplay({ perspective = 800, children }) {
 
     function setRotation(direction, angle) {
         rotateTo(direction, angle);
-        setCSSMatrix(getMatrix());        
+        setCSSMatrix(getMatrix());
     }
 
     return (
@@ -56,12 +56,12 @@ function RotationDisplay({ perspective = 800, children }) {
                 </RotatorDiv>
             </DisplayViewSection>
             <ControlsNav>
-                <button onClick={() => setRotation([0,1,0], 0)}>Front</button>
-                <button onClick={() => setRotation([1,0,0], Math.PI)}>Back</button>
-                <button onClick={() => setRotation([0,1,0], Math.PI / 2)}>Left</button>
-                <button onClick={() => setRotation([0,-1,0], Math.PI / 2)}>Right</button>
-                <button onClick={() => setRotation([-1,0,0], Math.PI / 2)}>Top</button>
-                <button onClick={() => setRotation([1,0,0], Math.PI / 2)}>Bottom</button>
+                <button onClick={() => setRotation([0, 1, 0], 0)}>Front</button>
+                <button onClick={() => setRotation([1, 0, 0], Math.PI)}>Back</button>
+                <button onClick={() => setRotation([0, 1, 0], Math.PI / 2)}>Left</button>
+                <button onClick={() => setRotation([0, -1, 0], Math.PI / 2)}>Right</button>
+                <button onClick={() => setRotation([-1, 0, 0], Math.PI / 2)}>Top</button>
+                <button onClick={() => setRotation([1, 0, 0], Math.PI / 2)}>Bottom</button>
             </ControlsNav>
         </>
     );
@@ -79,6 +79,16 @@ const ControlsNav = styled.div`
 
     button {
         margin-top: calc(var(--padding) / 2);
+    }
+    @media screen and (max-width: 540px) {
+        & {
+            flex-direction: row;
+        }
+        button {
+            font-size: 1.5rem;
+            height: 7rem;
+            min-width: 7rem;
+        }
     }
 `;
 

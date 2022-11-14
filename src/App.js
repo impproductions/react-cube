@@ -12,11 +12,12 @@ import Customs from './components/Customs';
 import './App.css';
 
 function App() {
-  const cubeSize = 400;
+  const isMobile = /Android|iPhone/i.test(navigator.userAgent);
+  const cubeSize = isMobile ? window.innerWidth * 0.7 : window.innerWidth * 0.5;
+
   return (
     <StyledMain>
       <RotationDisplay perspective={cubeSize * 2}>
-        {/* <RotationDisplay size={[cubeSize * 1.8, cubeSize * 1.8]}> */}
         <Cube
           side={cubeSize}
           faces={[

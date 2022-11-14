@@ -2,13 +2,20 @@
   font-size: 8pt;
 }
 
+@media screen and (max-width: 540px) {
+  * {
+    font-size: 6pt;
+  }
+}
+
 body {
   margin: 0;
   font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  height: 100vh;
-  width: 100vw;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
   background-image: linear-gradient(to right, #434343 0%, black 100%);
 }
 
