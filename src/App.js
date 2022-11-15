@@ -15,19 +15,21 @@ function App() {
   const isMobile = /Android|iPhone/i.test(navigator.userAgent);
   const cubeSize = Math.min(window.innerWidth, window.innerHeight) * (isMobile ? 0.7 : 0.6);
 
+  const faces = {
+    home: (<Home></Home>),
+    contacts: (<Contacts></Contacts>),
+    account: (<Account></Account>),
+    about: (<AboutUs></AboutUs>),
+    blog: (<Blog></Blog>),
+    customs: (<Customs></Customs>),
+}
+
   return (
     <StyledMain>
-      <RotationDisplay perspective={cubeSize * 2}>
+      <RotationDisplay perspective={cubeSize * 2} pages={Object.keys(faces)}>
         <Cube
           side={cubeSize}
-          faces={[
-            (<Home></Home>),
-            (<Contacts></Contacts>),
-            (<Account></Account>),
-            (<AboutUs></AboutUs>),
-            (<Blog></Blog>),
-            (<Customs></Customs>),
-          ]}
+          faces={Object.values(faces)}
         />
       </RotationDisplay>
     </StyledMain>

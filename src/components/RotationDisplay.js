@@ -4,7 +4,7 @@ import styled from "styled-components";
 import useDragHandler from "./hooks/dragHandler";
 import useRotationHandler from "./hooks/rotationHandler";
 
-function RotationDisplay({ perspective = 800, children }) {
+function RotationDisplay({ pages, perspective = 800, children }) {
     const [cssMatrix, setCSSMatrix] = useState([[1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1]]);
     const [animate, setAnimate] = useState(true);
     const dragAreaRef = useRef();
@@ -56,12 +56,12 @@ function RotationDisplay({ perspective = 800, children }) {
                 </RotatorDiv>
             </DisplayViewSection>
             <ControlsNav>
-                <button onClick={() => setRotation([0, 1, 0], 0)}>Front</button>
-                <button onClick={() => setRotation([1, 0, 0], Math.PI)}>Back</button>
-                <button onClick={() => setRotation([0, 1, 0], Math.PI / 2)}>Left</button>
-                <button onClick={() => setRotation([0, -1, 0], Math.PI / 2)}>Right</button>
-                <button onClick={() => setRotation([-1, 0, 0], Math.PI / 2)}>Top</button>
-                <button onClick={() => setRotation([1, 0, 0], Math.PI / 2)}>Bottom</button>
+                <button onClick={() => setRotation([0, 1, 0], 0)}>{pages[0]}</button>
+                <button onClick={() => setRotation([1, 0, 0], Math.PI)}>{pages[1]}</button>
+                <button onClick={() => setRotation([0, 1, 0], Math.PI / 2)}>{pages[2]}</button>
+                <button onClick={() => setRotation([0, -1, 0], Math.PI / 2)}>{pages[3]}</button>
+                <button onClick={() => setRotation([-1, 0, 0], Math.PI / 2)}>{pages[4]}</button>
+                <button onClick={() => setRotation([1, 0, 0], Math.PI / 2)}>{pages[5]}</button>
             </ControlsNav>
         </>
     );
@@ -79,6 +79,7 @@ const ControlsNav = styled.div`
 
     button {
         margin-top: calc(var(--padding) / 2);
+        text-transform: capitalize;
     }
     @media screen and (max-width: 540px) {
         & {
